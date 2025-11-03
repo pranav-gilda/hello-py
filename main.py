@@ -10,10 +10,6 @@ import sqlite3
 import pandas as pd
 
 load_dotenv()
-# genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-
-# Create a model instance
-# model = genai.GenerativeModel('models/gemini-2.5-flash')
 
 from anthropic import AsyncAnthropic
 from anthropic.types import MessageParam, ToolUnionParam
@@ -94,7 +90,6 @@ async def run_agent_loop(
     tool_handlers: dict[str, Callable[..., Any]],
     max_steps: int = 10,
     model: str = "claude-3-5-haiku-latest",
-    # model: str = 'models/gemini-2.5-flash',
     verbose: bool = True,
 ) -> Any | None:
     """
@@ -202,14 +197,9 @@ async def run_agent_loop(
                             if isinstance(tool_input, dict)
                             else handler(tool_input)
                         )
-
-                    # tool_results.append(
-                    #     {
-                    #         "type": "tool_result",
-                    #         "tool_use_id": content.id,
-                    #         "content": json.dumps(result),
-                    #     }
-                    # )
+                    # --- Robust Error Handling ---
+                    # The following checks prevent the harness from crashing if the AI 
+                    # calls a tool with invalid arguments, an unknown name, or duplicate IDs.
                     tool_results_dict[content.id] = {
                     "type": "tool_result",
                     "tool_use_id": content.id,
@@ -268,6 +258,7 @@ async def run_single_test(
         tools=tools,
         tool_handlers=tool_handlers,
         max_steps=10,
+        model="claude-sonnet-4-5",
         verbose=verbose,
     )
 
@@ -369,7 +360,7 @@ async def main(concurrent: bool = True):
             tools=tools,
             tool_handlers=tool_handlers,
             expected_answer=expected_answer,
-            verbose=False,
+            verbose=True,
         )
         for i in range(num_runs)
     ]
@@ -387,6 +378,8 @@ async def main(concurrent: bool = True):
         for task in tasks:
             result = await task
             results.append(result)
+            print("Waiting 15s for token quota...")
+            await asyncio.sleep(15)
 
     # Count successes
     # successes = sum(1 for _, success, _ in results)

@@ -110,3 +110,23 @@ Failed: 7/10
 Pass Rate: 30.0%
 
 ```
+
+---
+
+## Bonus Finding: Haiku 3.5 vs. Sonnet 4.5
+
+As a final experiment, the same test harness was run against the more advanced `claude-sonnet-4-5` model. This revealed a critical difference in model reasoning.
+
+### Haiku (`claude-sonnet-4-5`)
+* **Pass Rate: 30% (3/10)**
+* **Failure Mode:** Failed by falling for the "business contextual understanding" (submitting "Enterprise").
+* **Analysis:** Haiku demonstrated superior reasoning by *not* selecting the entire database. It correctly wrote aggregate SQL queries from the start, keeping its context and token usage small, and thus was able to complete the task.
+
+### Sonnet (`claude-sonnet-4-5`)
+* **Pass Rate: 0% (0/10)**
+* **Failure Mode:** Catastrophic token management failure.
+* **Analysis:** Sonnet failed every run by naively following the workflow. It would `SELECT *` all 1,500+ rows from the database, receive a massive JSON blob from the `sql_query_tool`, and then *paste that entire blob into its next thought*. This single step created an API request so large it instantly triggered the 30,000-token rate limit, causing the run to crash.
+
+### Conclusion
+
+This test successfully identified a critical weakness in the `claude-sonnet-4-5` model: it is **less token-aware** and employs a more naive, literal reasoning process than its smaller counterpart. Haiku, despite being the "cheaper" model, proved more effective at this task by implicitly understanding the need for efficient data retrieval.
