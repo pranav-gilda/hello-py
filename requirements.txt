@@ -1,0 +1,6 @@
+dotenv
+anthropic
+numpy
+pandas
+scikit-learn
+sqlite3

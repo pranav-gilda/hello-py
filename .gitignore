@@ -5,6 +5,14 @@ build/
 dist/
 wheels/
 *.egg-info
+extras/
 
 # Virtual environments
 .venv
+.env
+
+
+# IDE-specific files
+.vscode/
+.idea/
+
