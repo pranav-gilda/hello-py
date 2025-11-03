@@ -1,6 +1,6 @@
 # 🤖 LLM RL Task Submission: The Strategic Data Researcher
 
-This project contains a sophisticated Reinforcement Learning (RL) task designed for a Large Language Model (LLM). The goal was to create a scenario that is difficult enough to force a low-to-moderate pass rate (10%–40%), requiring the AI to navigate a complex, multi-tool environment and overcome an explicit "bias trap."
+This project contains a sophisticated Reinforcement Learning (RL) task designed for a Large Language Model (LLM). The goal was to create a scenario that is difficult enough to force a low-to-moderate pass rate (10%–40%), requiring the AI to navigate a complex, multi-tool environment and understanding essential "Business Context."
 
 ## 🎯 The Task: Ambiguous Data Research & Bias Conflict
 
@@ -69,7 +69,7 @@ pip install -r requirements.txt
 
 Generate the Test Database
 
-This step creates the necessary analytics.db file, which is pre-loaded with the data and the "bias trap" logic.
+This step creates the necessary analytics.db file, which is pre-loaded with the data and the "Business Context" logic.
 
 ```bash
 python data.py
@@ -95,14 +95,14 @@ The failures demonstrate the AI either following the "Enterprise" bias or failin
 
 ✗ Run 1: FAILURE - Got None, expected Hobbyist (Procedural Failure)
 ✗ Run 2: FAILURE - Got None, expected Hobbyist (Procedural Failure)
-✗ Run 3: FAILURE - Got Enterprise, expected Hobbyist (Bias Trap Failure)
+✗ Run 3: FAILURE - Got Enterprise, expected Hobbyist (Business Context Failure)
 ✓ Run 4: SUCCESS - Got Hobbyist (Correct Reasoning)
-✗ Run 5: FAILURE - Got Enterprise, expected Hobbyist (Bias Trap Failure)
+✗ Run 5: FAILURE - Got Enterprise, expected Hobbyist (Business Context Failure)
 ✓ Run 6: SUCCESS - Got Hobbyist (Correct Reasoning)
-✗ Run 7: FAILURE - Got Enterprise, expected Hobbyist (Bias Trap Failure)
-✗ Run 8: FAILURE - Got Enterprise, expected Hobbyist (Bias Trap Failure)
+✗ Run 7: FAILURE - Got Enterprise, expected Hobbyist (Business Context Failure)
+✗ Run 8: FAILURE - Got Enterprise, expected Hobbyist (Business Context Failure)
 ✓ Run 9: SUCCESS - Got Hobbyist (Correct Reasoning)
-✗ Run 10: FAILURE - Got Enterprise, expected Hobbyist (Bias Trap Failure)
+✗ Run 10: FAILURE - Got Enterprise, expected Hobbyist (Business Context Failure)
 
 Test Results:
 Passed: 3/10
